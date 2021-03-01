@@ -1,4 +1,8 @@
-#!/usr/bin/env python
+#############################################################################
+# PDDF
+#
+# PDDF sfp base class inherited from the base class
+#############################################################################
 
 try:
     import time
@@ -153,7 +157,7 @@ class PddfSfp(SfpBase):
             sysfsfile_eeprom.seek(offset)
             raw = sysfsfile_eeprom.read(num_bytes)
             for n in range(0, num_bytes):
-                eeprom_raw[n] = hex(ord(raw[n]))[2:].zfill(2)
+                eeprom_raw[n] = hex(raw[n])[2:].zfill(2)
         except Exception as e:
             print("Error: Unable to open eeprom_path: %s" % (str(e)))
         finally:
@@ -1087,7 +1091,7 @@ class PddfSfp(SfpBase):
                 try:
                     txdisable_ctl = 0xf if tx_disable else 0x0
                     buf = create_string_buffer(1)
-                    buf[0] = chr(txdisable_ctl)
+                    buf[0] = bytes([txdisable_ctl])
                     # Write to eeprom
                     eeprom_f = open(self.eeprom_path, "r+b")
                     eeprom_f.seek(QSFP_CONTROL_OFFSET)
@@ -1114,7 +1118,7 @@ class PddfSfp(SfpBase):
                     try:
                         eeprom_f = open(self.eeprom_path, mode="r+b", buffering=0)
                         buf = create_string_buffer(1)
-                        buf[0] = chr(txdisable_ctl)
+                        buf[0] = bytes([txdisable_ctl])
                         # Write to eeprom
                         eeprom_f.seek(SFP_STATUS_CONTROL_OFFSET)
                         eeprom_f.write(buf[0])
@@ -1168,7 +1172,7 @@ class PddfSfp(SfpBase):
                 channel_state = self.get_tx_disable_channel()
                 txdisable_ctl = (channel_state | channel) if disable else (channel_state & ~channel)
                 buf = create_string_buffer(1)
-                buf[0] = chr(txdisable_ctl)
+                buf[0] = bytes([txdisable_ctl])
                 # Write to eeprom
                 eeprom_f = open(self.eeprom_path, "r+b")
                 eeprom_f.seek(QSFP_CONTROL_OFFSET)
@@ -1216,7 +1220,7 @@ class PddfSfp(SfpBase):
                     # Fill in write buffer
                     regval = 0x3 if lpmode else 0x1  # 0x3:Low Power Mode, 0x1:High Power Mode
                     buffer = create_string_buffer(1)
-                    buffer[0] = chr(regval)
+                    buffer[0] = bytes([regval])
 
                     # Write to eeprom
                     eeprom_f = open(self.eeprom_path, "r+b")
@@ -1286,7 +1290,7 @@ class PddfSfp(SfpBase):
                     power_set_bit |= 1 << 1
 
                 buffer = create_string_buffer(1)
-                buffer[0] = chr(power_override_bit | power_set_bit)
+                buffer[0] = bytes([power_override_bit | power_set_bit])
                 # Write to eeprom
                 eeprom_f = open(self.eeprom_path, "r+b")
                 eeprom_f.seek(QSFP_POWEROVERRIDE_OFFSET)

@@ -1,17 +1,20 @@
-#!/usr/bin/env python
+#############################################################################
+# PDDF
+#
+# PDDF psu base class inherited from the base class
 #
 # All the supported PSU SysFS aattributes are
-#- psu_present
-#- psu_model_name
-#- psu_power_good
-#- psu_mfr_id
-#- psu_serial_num
-#- psu_fan_dir
-#- psu_v_out
-#- psu_i_out
-#- psu_p_out
-#- psu_fan1_speed_rpm
-#
+# - psu_present
+# - psu_model_name
+# - psu_power_good
+# - psu_mfr_id
+# - psu_serial_num
+# - psu_fan_dir
+# - psu_v_out
+# - psu_i_out
+# - psu_p_out
+# - psu_fan1_speed_rpm
+#############################################################################
 
 
 try:
